@@ -17,20 +17,18 @@ class HomeScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         drawer: Drawer(
-          backgroundColor: const Color(0xFFE0F2F7), // تغيير لون الخلفية
+          backgroundColor: const Color(0xFFE0F2F7),
           child: ListView(
             children: [
               DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Color(0xFF80CBC4), // لون رأس الدرج
-                ),
+                decoration: const BoxDecoration(color: Color(0xFF80CBC4)),
                 child: const Text(
                   'Menu',
                   style: TextStyle(color: Colors.white, fontSize: 24),
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.business), // أيقونة المشاريع
+                leading: const Icon(Icons.business),
                 title: const Text('Projects'),
                 onTap: () {
                   Navigator.pop(context);
@@ -43,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.task), // أيقونة المهام
+                leading: const Icon(Icons.task),
                 title: const Text('Tasks'),
                 onTap: () {
                   Navigator.pop(context);
@@ -59,19 +57,14 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
-          title: Center(child: const Text('Time Tracking')),
-          // leading: IconButton(
-          //   icon: const Icon(Icons.menu),
-          //   onPressed: () {
-          //     Scaffold.of(context).openDrawer();
-          //   },
-          // ),
+          title: const Center(child: Text('Time Tracking')),
           bottom: const TabBar(
             tabs: [Tab(text: 'All Entries'), Tab(text: 'Grouped by Projects')],
           ),
         ),
         body: TabBarView(
           children: [
+            // Tab 1: All Entries (unchanged)
             Consumer<TimeEntryProvider>(
               builder: (context, provider, child) {
                 if (provider.entries.isEmpty) {
@@ -118,7 +111,51 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
-            const Center(child: Text('Grouped by Projects Content')),
+
+            // Tab 2: Grouped by Projects (modified)
+            Consumer<TimeEntryProvider>(
+              builder: (context, provider, child) {
+                final groupedEntries = provider.groupEntriesByProject();
+
+                if (groupedEntries.isEmpty) {
+                  return const Center(
+                    child: Text('No time entries to display.'),
+                  );
+                }
+
+                return ListView.builder(
+                  itemCount: groupedEntries.length,
+                  itemBuilder: (context, index) {
+                    final projectName = groupedEntries.keys.elementAt(index);
+                    final entries = groupedEntries[projectName]!;
+
+                    return ExpansionTile(
+                      title: Text(projectName),
+                      children:
+                          entries.map((entry) {
+                            return ListTile(
+                              title: Text('${entry.totalTime.inHours} hours'),
+                              subtitle: Text(
+                                '${entry.date.toString()} - Notes: ${entry.notes}',
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => TimeEntryDetailsScreen(
+                                          entry: entry,
+                                        ),
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
