@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker/provider/time_entry_provider.dart'; // تصحيح المسار
+import 'package:time_tracker/provider/time_entire_provider.dart'; // تصحيح المسار
 import 'package:time_tracker/screens/homescreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => TimeEntryProvider()),
+        // ChangeNotifierProvider(create: (context) => ProjectProvider()),
+        // Correct provider name
+        // ... other providers ...
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

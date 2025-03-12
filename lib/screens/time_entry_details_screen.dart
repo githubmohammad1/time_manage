@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker/models/time_entry.dart';
-import 'package:time_tracker/provider/time_entry_provider.dart';
+import 'package:time_tracker/models/clases.dart';
+import 'package:time_tracker/provider/time_entire_provider.dart';
 
 class TimeEntryDetailsScreen extends StatelessWidget {
   final TimeEntry entry;
