@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         drawer: Drawer(
-          backgroundColor: const Color(0xFFE0F2F7),
+          backgroundColor: const Color.fromARGB(255, 253, 254, 255),
           child: ListView(
             children: [
               DrawerHeader(
@@ -57,8 +57,9 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 228, 228, 230),
           title: const Center(child: Text('Time Tracking')),
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: [Tab(text: 'All Entries'), Tab(text: 'Grouped by Projects')],
           ),
         ),
